@@ -1,4 +1,5 @@
 ﻿using DataAccess.Entities;
+using DataAccess.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -81,10 +82,93 @@ namespace DataAccess
 
 
 
-            modelBuilder.Entity<Credentials>().HasOne(c => c.User)
-                .WithOne(u => u.Credentials)
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Credentials)
+                .WithOne(c => c.User)
                 .HasForeignKey<User>(u => u.CredentialsId);
 
+            // Зв'язок один-до-багатьох між User та Pizza
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Pizza)
+                .WithOne()
+                .HasForeignKey(p => p.Id);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Sushis)
+                .WithOne()
+                .HasForeignKey(p => p.Id);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Salad)
+                .WithOne()
+                .HasForeignKey(p => p.Id);
+
+
+
+            modelBuilder.Entity<Pizza>()
+                        .HasMany(p => p.Ingridients)
+                        .WithMany(i => i.Pizzas)
+                        .UsingEntity<PizzaIngridients>(
+                        j => j
+                            .HasOne(pi => pi.Ingridient)
+                            .WithMany()
+                            .HasForeignKey(pi => pi.IngridientId),
+                        j => j
+                            .HasOne(pi => pi.Pizza)
+                            .WithMany()
+                            .HasForeignKey(pi => pi.PizzaId)
+                        //j =>
+                        //{
+                        //    j.HasKey(pi => new { pi.PizzaId, pi.IngridientId });
+                        //    j.ToTable("PizzaIngridients");
+                        //}
+         );
+            modelBuilder.Entity<Sushi>()
+                        .HasMany(s => s.Ingridients)
+                        .WithMany(i => i.Sushis)
+                        .UsingEntity<SushiIngridients>(
+                        j => j
+                            .HasOne(su => su.Ingridient)
+                            .WithMany()
+                            .HasForeignKey(su => su.IngridientId),
+                        j => j
+                            .HasOne(su => su.Sushi)
+                            .WithMany()
+                            .HasForeignKey(su => su.SushiId)
+                        //j =>
+                        //{
+                        //    j.HasKey(su => new { su.SushiId, su.IngridientId });
+                        //    j.ToTable("SushiIngridients");
+                        //}
+         );
+            modelBuilder.Entity<Salad>()
+                        .HasMany(s => s.Ingridients)
+                        .WithMany(i => i.Salads)
+                        .UsingEntity<SaladIngridients>(
+                        j => j
+                            .HasOne(sa => sa.Ingridient)
+                            .WithMany()
+                            .HasForeignKey(sa => sa.IngridientId),
+                        j => j
+                            .HasOne(sa => sa.Salad)
+                            .WithMany()
+                            .HasForeignKey(sa => sa.SaladId)
+                        //j =>
+                        //{
+                        //    j.HasKey(sa => new { sa.Salad, sa.IngridientId });
+                        //    j.ToTable("SaladIngridients");
+                        //}
+         );
+
+            ////modelBuilder.SeedCredentials();
+            //modelBuilder.SeedUsers();
+            //modelBuilder.SeedIngridients();
+            //modelBuilder.SeedSushis();
+            //modelBuilder.SeedPizzas();
+            //modelBuilder.SeedSalads();
+            //modelBuilder.SeedSushiIngridient();
+            //modelBuilder.SeedSaladIngridient();
+            //modelBuilder.SeedPizzaIngridient();
         }
 
     }

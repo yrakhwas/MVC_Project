@@ -18,6 +18,10 @@ namespace DataAccess.Entities
             {
                 return CalculateCost();
             }
+            set
+            {
+                CalculateCost();
+            }
         }
         public decimal CalculateCost()
         {
