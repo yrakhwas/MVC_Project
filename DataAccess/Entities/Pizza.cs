@@ -10,8 +10,8 @@ namespace DataAccess.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Ingridient[]Ingridients {  get; set; }
-        //public List<Ingridient> Ingridients { get; set; }
+        //public Ingridient[]Ingridients {  get; set; }
+        public List<Ingridient> Ingridients { get; set; }
         public decimal Cost
         {
             get

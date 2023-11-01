@@ -53,7 +53,7 @@ namespace DataAccess
             modelBuilder.Entity<Ingridient>().Property(i => i.Name).IsRequired();
 
             modelBuilder.Entity<Pizza>().HasKey(p => p.Id);
-            modelBuilder.Entity<Pizza>().Property(p=>p.Id)
+            modelBuilder.Entity<Pizza>().Property(p => p.Id)
                                             .ValueGeneratedOnAdd()
                                             .UseIdentityColumn();
             modelBuilder.Entity<Pizza>().Property(p=>p.Cost)
@@ -88,23 +88,22 @@ namespace DataAccess
                 .HasForeignKey<User>(u => u.CredentialsId);
 
             // Зв'язок один-до-багатьох між User та Pizza
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Pizza)
-                .WithOne()
-                .HasForeignKey(p => p.Id);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.Pizzas)
+            //    .WithOne()
+            //    .HasForeignKey(p => p.Id);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Sushis)
-                .WithOne()
-                .HasForeignKey(p => p.Id);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.Sushis)
+            //    .WithOne()
+            //    .HasForeignKey(s => s.Id);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Salad)
-                .WithOne()
-                .HasForeignKey(p => p.Id);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.Salad)
+            //    .WithOne()
+            //    .HasForeignKey(sa => sa.Id);
 
-
-
+           
             modelBuilder.Entity<Pizza>()
                         .HasMany(p => p.Ingridients)
                         .WithMany(i => i.Pizzas)
@@ -116,12 +115,12 @@ namespace DataAccess
                         j => j
                             .HasOne(pi => pi.Pizza)
                             .WithMany()
-                            .HasForeignKey(pi => pi.PizzaId)
-                        //j =>
-                        //{
-                        //    j.HasKey(pi => new { pi.PizzaId, pi.IngridientId });
-                        //    j.ToTable("PizzaIngridients");
-                        //}
+                            .HasForeignKey(pi => pi.PizzaId),
+                        j =>
+                        {
+                            j.HasKey(pi => new { pi.PizzaId, pi.IngridientId });
+                            j.ToTable("PizzaIngridients");
+                        }
          );
             modelBuilder.Entity<Sushi>()
                         .HasMany(s => s.Ingridients)
@@ -134,12 +133,12 @@ namespace DataAccess
                         j => j
                             .HasOne(su => su.Sushi)
                             .WithMany()
-                            .HasForeignKey(su => su.SushiId)
-                        //j =>
-                        //{
-                        //    j.HasKey(su => new { su.SushiId, su.IngridientId });
-                        //    j.ToTable("SushiIngridients");
-                        //}
+                            .HasForeignKey(su => su.SushiId),
+                        j =>
+                        {
+                            j.HasKey(su => new { su.SushiId, su.IngridientId });
+                            j.ToTable("SushiIngridients");
+                        }
          );
             modelBuilder.Entity<Salad>()
                         .HasMany(s => s.Ingridients)
@@ -152,15 +151,16 @@ namespace DataAccess
                         j => j
                             .HasOne(sa => sa.Salad)
                             .WithMany()
-                            .HasForeignKey(sa => sa.SaladId)
-                        //j =>
-                        //{
-                        //    j.HasKey(sa => new { sa.Salad, sa.IngridientId });
-                        //    j.ToTable("SaladIngridients");
-                        //}
+                            .HasForeignKey(sa => sa.SaladId),
+                        j =>
+                        {
+                            j.HasKey(sa => new { sa.SaladId, sa.IngridientId });
+                            j.ToTable("SaladIngridients");
+                        }
          );
 
-            ////modelBuilder.SeedCredentials();
+
+            //modelBuilder.SeedCredentials();
             //modelBuilder.SeedUsers();
             //modelBuilder.SeedIngridients();
             //modelBuilder.SeedSushis();
