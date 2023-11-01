@@ -51,6 +51,8 @@ namespace DataAccess
             modelBuilder.Entity<User>().HasKey(u => u.CredentialsId);
             modelBuilder.Entity<Ingridient>().HasKey(i => i.Id);
             modelBuilder.Entity<Ingridient>().Property(i => i.Name).IsRequired();
+            modelBuilder.Entity<Ingridient>().Property(i=>i.Price)
+                                            .HasColumnType("decimal(18,2)");          
 
             modelBuilder.Entity<Pizza>().HasKey(p => p.Id);
             modelBuilder.Entity<Pizza>().Property(p => p.Id)
@@ -60,6 +62,9 @@ namespace DataAccess
                                             .IsRequired();
             modelBuilder.Entity<Pizza>().Property(p => p.Name)
                                             .IsRequired();
+            modelBuilder.Entity<Pizza>()
+                        .Property(p => p.Cost)
+                        .HasColumnType("decimal(18, 2)");
 
             modelBuilder.Entity<Sushi>().HasKey(s => s.Id);
             modelBuilder.Entity<Sushi>().Property(s => s.Id)
@@ -69,6 +74,10 @@ namespace DataAccess
                                             .IsRequired();
             modelBuilder.Entity<Sushi>().Property(s => s.Name)
                                             .IsRequired();
+            modelBuilder.Entity<Sushi>()
+                        .Property(s => s.Cost)
+                        .HasColumnType("decimal(18, 2)");
+
 
 
             modelBuilder.Entity<Salad>().HasKey(sal => sal.Id);
@@ -79,6 +88,9 @@ namespace DataAccess
                                             .IsRequired();
             modelBuilder.Entity<Salad>().Property(sal => sal.Name)
                                             .IsRequired();
+            modelBuilder.Entity<Salad>()
+                        .Property(sal => sal.Cost)
+                        .HasColumnType("decimal(18, 2)");
 
 
 
@@ -87,23 +99,39 @@ namespace DataAccess
                 .WithOne(c => c.User)
                 .HasForeignKey<User>(u => u.CredentialsId);
 
-            // Зв'язок один-до-багатьох між User та Pizza
-            //modelBuilder.Entity<User>()
-            //    .HasMany(u => u.Pizzas)
-            //    .WithOne()
-            //    .HasForeignKey(p => p.Id);
+            //Зв'язок один-до-багатьох між User та Pizza
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Pizzas)
+                .WithOne()
+                .HasForeignKey(p => p.Id);
 
-            //modelBuilder.Entity<User>()
-            //    .HasMany(u => u.Sushis)
-            //    .WithOne()
-            //    .HasForeignKey(s => s.Id);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Sushis)
+                .WithOne()
+                .HasForeignKey(s => s.Id);
 
-            //modelBuilder.Entity<User>()
-            //    .HasMany(u => u.Salad)
-            //    .WithOne()
-            //    .HasForeignKey(sa => sa.Id);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Salad)
+                .WithOne()
+                .HasForeignKey(sa => sa.Id);
 
-           
+
+            modelBuilder.Entity<Pizza>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Pizzas)
+                .HasForeignKey(p => p.UserId);
+
+            modelBuilder.Entity<Sushi>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Sushis)
+                .HasForeignKey(p => p.UserId);
+
+            modelBuilder.Entity<Salad>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Salad)
+                .HasForeignKey(p => p.UserId);
+
+
             modelBuilder.Entity<Pizza>()
                         .HasMany(p => p.Ingridients)
                         .WithMany(i => i.Pizzas)

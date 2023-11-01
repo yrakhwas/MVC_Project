@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(EstablishentDbContext))]
-    [Migration("20231101122833_SeedData")]
-    partial class SeedData
+    [Migration("20231101211529_createDb")]
+    partial class createDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,30 +86,35 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Pizzas");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.PizzaIngridients", b =>
                 {
-                    b.Property<int>("IngridientId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PizzaId")
                         .HasColumnType("int");
 
-                    b.HasKey("IngridientId", "PizzaId");
+                    b.Property<int>("IngridientId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PizzaId");
+                    b.HasKey("PizzaId", "IngridientId");
 
-                    b.ToTable("PizzaIngridients");
+                    b.HasIndex("IngridientId");
+
+                    b.ToTable("PizzaIngridients", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Salad", b =>
@@ -121,30 +126,35 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Salads");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.SaladIngridients", b =>
                 {
-                    b.Property<int>("IngridientId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SaladId")
                         .HasColumnType("int");
 
-                    b.HasKey("IngridientId", "SaladId");
+                    b.Property<int>("IngridientId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("SaladId");
+                    b.HasKey("SaladId", "IngridientId");
 
-                    b.ToTable("SaladIngridients");
+                    b.HasIndex("IngridientId");
+
+                    b.ToTable("SaladIngridients", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Sushi", b =>
@@ -156,30 +166,35 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Sushis");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.SushiIngridients", b =>
                 {
-                    b.Property<int>("IngridientId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SushiId")
                         .HasColumnType("int");
 
-                    b.HasKey("IngridientId", "SushiId");
+                    b.Property<int>("IngridientId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("SushiId");
+                    b.HasKey("SushiId", "IngridientId");
 
-                    b.ToTable("SushiIngridients");
+                    b.HasIndex("IngridientId");
+
+                    b.ToTable("SushiIngridients", (string)null);
                 });
 
             modelBuilder.Entity("DataAccess.Entities.User", b =>
@@ -194,11 +209,13 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Pizza", b =>
                 {
-                    b.HasOne("DataAccess.Entities.User", null)
-                        .WithMany("Pizza")
-                        .HasForeignKey("Id")
+                    b.HasOne("DataAccess.Entities.User", "User")
+                        .WithMany("Pizzas")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.PizzaIngridients", b =>
@@ -222,11 +239,13 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Salad", b =>
                 {
-                    b.HasOne("DataAccess.Entities.User", null)
+                    b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany("Salad")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.SaladIngridients", b =>
@@ -250,11 +269,13 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Sushi", b =>
                 {
-                    b.HasOne("DataAccess.Entities.User", null)
+                    b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany("Sushis")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.SushiIngridients", b =>
@@ -294,7 +315,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.User", b =>
                 {
-                    b.Navigation("Pizza");
+                    b.Navigation("Pizzas");
 
                     b.Navigation("Salad");
 

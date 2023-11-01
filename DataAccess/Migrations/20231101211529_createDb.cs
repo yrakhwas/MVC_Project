@@ -65,14 +65,15 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pizzas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pizzas_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Pizzas_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "CredentialsId",
                         onDelete: ReferentialAction.Cascade);
@@ -85,14 +86,15 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Salads", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Salads_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Salads_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "CredentialsId",
                         onDelete: ReferentialAction.Cascade);
@@ -105,14 +107,15 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sushis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sushis_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Sushis_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "CredentialsId",
                         onDelete: ReferentialAction.Cascade);
@@ -127,7 +130,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PizzaIngridients", x => new { x.IngridientId, x.PizzaId });
+                    table.PrimaryKey("PK_PizzaIngridients", x => new { x.PizzaId, x.IngridientId });
                     table.ForeignKey(
                         name: "FK_PizzaIngridients_Ingridients_IngridientId",
                         column: x => x.IngridientId,
@@ -151,7 +154,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SaladIngridients", x => new { x.IngridientId, x.SaladId });
+                    table.PrimaryKey("PK_SaladIngridients", x => new { x.SaladId, x.IngridientId });
                     table.ForeignKey(
                         name: "FK_SaladIngridients_Ingridients_IngridientId",
                         column: x => x.IngridientId,
@@ -175,7 +178,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SushiIngridients", x => new { x.IngridientId, x.SushiId });
+                    table.PrimaryKey("PK_SushiIngridients", x => new { x.SushiId, x.IngridientId });
                     table.ForeignKey(
                         name: "FK_SushiIngridients_Ingridients_IngridientId",
                         column: x => x.IngridientId,
@@ -191,19 +194,34 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PizzaIngridients_PizzaId",
+                name: "IX_PizzaIngridients_IngridientId",
                 table: "PizzaIngridients",
-                column: "PizzaId");
+                column: "IngridientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaladIngridients_SaladId",
+                name: "IX_Pizzas_UserId",
+                table: "Pizzas",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaladIngridients_IngridientId",
                 table: "SaladIngridients",
-                column: "SaladId");
+                column: "IngridientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SushiIngridients_SushiId",
+                name: "IX_Salads_UserId",
+                table: "Salads",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SushiIngridients_IngridientId",
                 table: "SushiIngridients",
-                column: "SushiId");
+                column: "IngridientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sushis_UserId",
+                table: "Sushis",
+                column: "UserId");
         }
 
         /// <inheritdoc />
