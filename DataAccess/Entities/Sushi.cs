@@ -12,8 +12,8 @@ namespace DataAccess.Entities
         public string Name { get; set; }
 
         public List<Ingridient> Ingridients { get; set; }
-        public User User { get; set; }
-        public int UserId { get; set; }
+        public User ?User { get; set; }
+        public int? UserId { get; set; }
         public decimal Cost
         { get
             {

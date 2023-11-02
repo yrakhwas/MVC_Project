@@ -5,7 +5,7 @@
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class createDb : Migration
+    public partial class CreateDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,7 +65,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -75,8 +75,7 @@ namespace DataAccess.Migrations
                         name: "FK_Pizzas_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "CredentialsId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CredentialsId");
                 });
 
             migrationBuilder.CreateTable(
@@ -86,7 +85,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -96,8 +95,7 @@ namespace DataAccess.Migrations
                         name: "FK_Salads_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "CredentialsId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CredentialsId");
                 });
 
             migrationBuilder.CreateTable(
@@ -107,7 +105,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -117,8 +115,7 @@ namespace DataAccess.Migrations
                         name: "FK_Sushis_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "CredentialsId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CredentialsId");
                 });
 
             migrationBuilder.CreateTable(
